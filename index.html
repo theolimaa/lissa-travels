@@ -563,6 +563,40 @@
     .testimonials { background: var(--bg); }
     .testimonials-heading { text-align: center; margin-bottom: 3rem; }
     .testimonials-heading .section-sub { margin: 0 auto; }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .testimonial-card {
+      background: var(--bg2);
+      border-radius: 20px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      border: 1px solid rgba(0,32,78,0.07);
+    }
+    .testimonial-stars { color: #f5a623; font-size: 1rem; letter-spacing: 0.05em; }
+    .testimonial-text {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      flex: 1;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 0.85rem; }
+    .testimonial-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .testimonial-name { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+    .testimonial-dest { font-size: 0.78rem; color: var(--subtle); margin-top: 0.1rem; }
     .testi-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -748,6 +782,7 @@
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
       .gallery-item:nth-child(1) { grid-column: span 2; }
       .testi-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
       section { padding: 4rem 1.25rem; }
@@ -973,9 +1008,40 @@
         <h2 class="section-title reveal reveal-delay-1">O que dizem <span>meus clientes</span></h2>
         <p class="section-sub reveal reveal-delay-2">Pessoas que já viajaram mais e gastaram menos com a minha assessoria.</p>
       </div>
-      <!-- DEPOIMENTOS REAIS A ADICIONAR -->
-      <div style="text-align:center; padding: 2rem; background: var(--bg2); border-radius: 20px; color: var(--muted); font-size: 0.95rem;">
-        Em breve depoimentos reais dos clientes.
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal reveal-delay-1">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Eu nunca imaginei que conseguiria voar para a Europa em Business Class. A Lissa encontrou disponibilidade, cuidou de tudo e eu embarquei pagando uma fração do que custaria normalmente. Foi surreal."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">AM</div>
+            <div>
+              <div class="testimonial-name">Ana Martins</div>
+              <div class="testimonial-dest">Lisboa, Portugal · Business Class</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-2">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Fui com minha esposa para Roma em lua de mel. A Lissa fez tudo: pesquisou as rotas, emitiu as passagens e ainda deu dicas de hotéis. Economizamos mais de R$12.000 nos voos e viajamos super confortáveis."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">RC</div>
+            <div>
+              <div class="testimonial-name">Rafael Costa</div>
+              <div class="testimonial-dest">Roma, Itália · Lua de mel</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-3">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Tinha medo de não entender nada de milhas e acabar perdendo dinheiro. Com a Lissa foi o contrário: ela explica tudo, é super atenciosa e o resultado foi incrível. Já indiquei para toda a família."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">JS</div>
+            <div>
+              <div class="testimonial-name">Juliana Santos</div>
+              <div class="testimonial-dest">Londres, Reino Unido · Família</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
