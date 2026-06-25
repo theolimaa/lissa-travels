@@ -62,17 +62,8 @@
       backdrop-filter: blur(12px);
       box-shadow: 0 1px 20px rgba(0,32,78,0.08);
     }
-    .nav-logo {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--navy);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      letter-spacing: -0.01em;
-    }
-    .nav-logo span { color: var(--gold); }
+    .nav-logo { display: flex; align-items: center; }
+    .nav-logo img { height: 38px; width: auto; display: block; }
     .nav-cta {
       display: inline-flex;
       align-items: center;
@@ -743,14 +734,8 @@
       color: rgba(255,255,255,0.45);
       font-size: 0.82rem;
     }
-    footer .foot-logo {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: rgba(255,255,255,0.9);
-      margin-bottom: 0.5rem;
-    }
-    footer .foot-logo span { color: var(--gold); }
+    footer .foot-logo { margin-bottom: 0.5rem; }
+    footer .foot-logo img { height: 36px; width: auto; display: block; }
 
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
@@ -802,7 +787,7 @@
 
   <!-- NAV -->
   <nav id="navbar">
-    <div class="nav-logo">✈ Lissa <span>Travels</span></div>
+    <div class="nav-logo"><img src="img/logo.png" alt="Lissa Travels"/></div>
     <a href="https://wa.me/5585999603225?text=Olá%2C%20Lissa!%20Quero%20viajar%20mais%20gastando%20menos%20com%20milhas"
        class="nav-cta" target="_blank" rel="noopener">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.33 20.944l.022-.014A10.972 10.972 0 0012 23c5.523 0 10-4.477 10-10S17.523 3 12 3 2 7.477 2 13c0 1.982.553 3.831 1.516 5.407l-.017.011L2 22l3.33-1.056z"/></svg>
@@ -1135,7 +1120,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="foot-logo">✈ Lissa <span>Travels</span></div>
+    <div class="foot-logo"><img src="img/logo-dark.png" alt="Lissa Travels"/></div>
     <p>Assessoria de Milhas Personalizada · Atendimento via WhatsApp</p>
     <p style="margin-top:0.5rem; font-size:0.75rem; opacity:0.5">© 2025 Lissa Travels · Todos os direitos reservados</p>
   </footer>
