@@ -902,12 +902,13 @@
     }
     @media (max-width: 600px) {
       section { padding: 4rem 1.25rem; }
-      .hero-inner { padding: 2rem 1.5rem 2rem; gap: 0; }
-      .hero-logo { height: 140px; margin-bottom: 1.25rem; }
-      .hero-photo-wrap { display: none; }
+      .hero-inner { padding: 1.75rem 1.5rem 1.75rem; gap: 1.5rem; }
+      .hero-logo { height: 120px; margin-bottom: 1rem; }
+      .hero-photo-frame { aspect-ratio: auto; height: 240px; }
+      .hero-photo-wrap { max-width: 100%; }
       .hero-inner > div:first-child { text-align: center; }
-      .hero-headline { font-size: clamp(1.85rem, 7.5vw, 2.2rem); margin-bottom: 0.85rem; }
-      .hero-sub { font-size: 0.93rem; margin-bottom: 1.5rem; max-width: 100%; margin-left: auto; margin-right: auto; }
+      .hero-headline { font-size: clamp(1.75rem, 7.5vw, 2.1rem); margin-bottom: 0.75rem; }
+      .hero-sub { font-size: 0.9rem; margin-bottom: 1.25rem; max-width: 100%; margin-left: auto; margin-right: auto; }
       .hero-actions { flex-direction: column; align-items: center; }
       .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
       .services-grid { grid-template-columns: 1fr; }
