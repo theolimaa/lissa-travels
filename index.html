@@ -870,6 +870,50 @@
     footer .foot-logo { margin-bottom: 0.5rem; }
     footer .foot-logo img { height: 108px; width: auto; display: block; }
 
+    /* ── GLOBE ── */
+    .globe-section { background: var(--bg); }
+    .globe-container {
+      position: relative;
+      width: min(520px, 90vw);
+      margin: 3rem auto 0;
+      aspect-ratio: 1;
+    }
+    #globe-canvas {
+      width: 100%; height: 100%;
+      display: block;
+      cursor: grab;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      border-radius: 50%;
+      touch-action: none;
+    }
+    .g-label {
+      position: absolute;
+      padding: 0.3rem 0.65rem;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      border-radius: 4px;
+      pointer-events: none;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.1), inset 0 -1px 0 rgba(0,0,0,0.12);
+      text-shadow: 0 1px 1px rgba(0,0,0,0.25);
+      transition: opacity 0.3s, filter 0.3s;
+    }
+    .g-label-shine {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 50%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.1) 60%, transparent 100%);
+      border-radius: 4px 4px 50% 50%;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) {
+      .g-label { font-size: 0.68rem; padding: 0.2rem 0.5rem; }
+    }
+
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(22px); }
@@ -1114,6 +1158,20 @@
     </div>
   </section>
 
+  <!-- GLOBE -->
+  <section class="globe-section">
+    <div class="section-inner">
+      <div style="text-align:center;max-width:560px;margin:0 auto">
+        <div class="section-tag reveal" style="justify-content:center">Pelo mundo</div>
+        <h2 class="section-title reveal reveal-delay-1">Destinos onde já<br/>voei <span>com milhas</span></h2>
+        <p class="section-sub reveal reveal-delay-2" style="margin:0 auto">Gire o globo e conheça os lugares que já visitei usando a mesma estratégia que aplico para os meus clientes.</p>
+      </div>
+      <div id="globe-root" class="globe-container reveal reveal-delay-3">
+        <canvas id="globe-canvas"></canvas>
+      </div>
+    </div>
+  </section>
+
   <!-- TESTIMONIALS -->
   <section class="testimonials">
     <div class="section-inner">
@@ -1330,6 +1388,117 @@
       <path d="M5.33 20.944l.022-.014A10.972 10.972 0 0012 23c5.523 0 10-4.477 10-10S17.523 3 12 3 2 7.477 2 13c0 1.982.553 3.831 1.516 5.407l-.017.011L2 22l3.33-1.056z"/>
     </svg>
   </a>
+
+  <script type="module">
+    import createGlobe from 'https://esm.sh/cobe@0.6.3'
+
+    const MARKERS = [
+      { id: 'paris',   location: [48.86,   2.35], text: 'Paris',    color: '#B59459', rotate: -5 },
+      { id: 'roma',    location: [41.90,  12.49], text: 'Roma',     color: '#00204E', rotate:  4 },
+      { id: 'londre',  location: [51.51,  -0.13], text: 'Londres',  color: '#4e9a72', rotate: -3 },
+      { id: 'madrid',  location: [40.42,  -3.70], text: 'Madrid',   color: '#B59459', rotate:  5 },
+      { id: 'milao',   location: [45.46,   9.19], text: 'Milão',    color: '#00204E', rotate: -4 },
+      { id: 'curacao', location: [12.12, -68.93], text: 'Curaçao',  color: '#4e9a72', rotate:  6 },
+    ]
+
+    const canvas = document.getElementById('globe-canvas')
+    const root   = document.getElementById('globe-root')
+
+    if (canvas && root) {
+      MARKERS.forEach(m => {
+        const el = document.createElement('div')
+        el.className = 'g-label'
+        el.id = `g-label-${m.id}`
+        el.style.cssText = `background:${m.color};transform:translate(-50%,-100%) translateY(-10px) rotate(${m.rotate}deg);`
+        el.innerHTML = `<span class="g-label-shine"></span>${m.text}`
+        root.appendChild(el)
+      })
+
+      function markerToScreen(lat, lng, phi, theta, size) {
+        const latR = lat * Math.PI / 180, lngR = lng * Math.PI / 180
+        const x = Math.cos(latR) * Math.sin(lngR)
+        const y = Math.sin(latR)
+        const z = Math.cos(latR) * Math.cos(lngR)
+        const x2 = x * Math.cos(phi) - z * Math.sin(phi)
+        const z2 = x * Math.sin(phi) + z * Math.cos(phi)
+        const y3 = y * Math.cos(theta) - z2 * Math.sin(theta)
+        const z3 = y * Math.sin(theta) + z2 * Math.cos(theta)
+        const half = size / 2
+        return { x: half + x2 * half, y: half - y3 * half, visible: z3 > 0.15 }
+      }
+
+      let phi = 0, phiOffset = 0, thetaOffset = 0, dragPhi = 0, dragTheta = 0
+      let pointerDown = null, isPaused = false, globe = null
+      const SPEED = 0.003, THETA = 0.2
+
+      function initGlobe() {
+        const w = canvas.offsetWidth
+        if (!w || globe) return
+
+        globe = createGlobe(canvas, {
+          devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+          width: w, height: w,
+          phi: 0, theta: THETA,
+          dark: 0, diffuse: 1.5,
+          mapSamples: 16000, mapBrightness: 9,
+          baseColor: [1, 1, 1],
+          markerColor: [0.71, 0.58, 0.35],
+          glowColor: [0.94, 0.93, 0.91],
+          markerElevation: 0,
+          markers: MARKERS.map(m => ({ location: m.location, size: 0.035 })),
+        })
+
+        function tick() {
+          if (!isPaused) phi += SPEED
+          const curPhi   = phi + phiOffset + dragPhi
+          const curTheta = THETA + thetaOffset + dragTheta
+          globe.update({ phi: curPhi, theta: curTheta })
+
+          const size = canvas.offsetWidth
+          MARKERS.forEach(m => {
+            const pos = markerToScreen(m.location[0], m.location[1], curPhi, curTheta, size)
+            const el  = document.getElementById(`g-label-${m.id}`)
+            if (!el) return
+            el.style.left    = pos.x + 'px'
+            el.style.top     = pos.y + 'px'
+            el.style.opacity = pos.visible ? '1' : '0'
+            el.style.filter  = pos.visible ? 'none' : 'blur(4px)'
+          })
+          requestAnimationFrame(tick)
+        }
+        tick()
+        setTimeout(() => { canvas.style.opacity = '1' })
+      }
+
+      if (canvas.offsetWidth > 0) {
+        initGlobe()
+      } else {
+        const ro = new ResizeObserver(entries => {
+          if (entries[0]?.contentRect.width > 0) { ro.disconnect(); initGlobe() }
+        })
+        ro.observe(canvas)
+      }
+
+      canvas.addEventListener('pointerdown', e => {
+        pointerDown = { x: e.clientX, y: e.clientY }
+        canvas.style.cursor = 'grabbing'
+        isPaused = true
+      })
+      window.addEventListener('pointermove', e => {
+        if (!pointerDown) return
+        dragPhi   = (e.clientX - pointerDown.x) / 300
+        dragTheta = (e.clientY - pointerDown.y) / 1000
+      }, { passive: true })
+      window.addEventListener('pointerup', () => {
+        if (!pointerDown) return
+        phiOffset += dragPhi; thetaOffset += dragTheta
+        dragPhi = dragTheta = 0
+        pointerDown = null
+        canvas.style.cursor = 'grab'
+        isPaused = false
+      }, { passive: true })
+    }
+  </script>
 
   <script>
 
